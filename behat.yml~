@@ -1,0 +1,9 @@
+# behat.yml
+
+default:
+    suites:
+        default:
+            context:
+                - FeatureContext:
+                   github_username: '@caseysoftware'
+                   github_password: '@notgoingtotellyou'
