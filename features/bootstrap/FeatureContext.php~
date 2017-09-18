@@ -135,9 +135,8 @@ class FeatureContext implements Context
    */
   public function iHaveARepositoryCalled($arg1)
   {
-    echo "arg1: " . $arg1;
     $this->iRequestAListOfMyRepositories();
-    $this->theResultsShouldIncludeARepositoryName("monkey");
+    $this->theResultsShouldIncludeARepositoryName($arg1);
 
   }
 
@@ -169,5 +168,80 @@ class FeatureContext implements Context
   {
 	$this->response = $this->client->delete('/repos/' . $this->username . '/' . $arg1);
       $this->iExpectAResponseCode(204);
-  } 
+  }
+
+  protected function iExpectASuccessfulRequest()
+  {
+
+  }
+
+  protected function iExpectAFailedRequest()
+  {
+
+  }
+
+/**
+     * @Given I have the following repositories:
+     */
+    public function iHaveTheFollowingRepositories(TableNode $table)
+    {
+	    $this->table = $table->getRows();
+	    array_shift($this->table);
+	    foreach($this->table as $id => $row) {
+		    $this->table[$id]['name'] = $row[0] . '/' . $row[1];
+		    $this->response = $this->client->get('/repos/'.$row[0].'/'.$row[1]);
+		    $this->iExpectAResponseCode(200);
+	    }
+
+    }
+
+    /**
+     * @When I watch each repository
+     */
+    public function iWatchEachRepository()
+    {
+	    $parameters = json_encode(['subscribed' => 'true']);
+
+	    foreach($this->table as $row) {
+		    $watch_url = '/repos/' . $row['name'] . '/subscription';
+		    $this->client->put($watch_url, ['body' => $parameters]);
+	    }
+    }
+
+    /**
+     * @Then My watch list will include those respositories
+     */
+    public function myWatchListWillIncludeThoseRespositories()
+    {
+	    $watch_url = '/users/' . $this->username . '/subscriptions';
+	    $this->response = $this->client->get($watch_url);
+	    $watches = json_decode($this->response->getBody(), true);
+	    var_dump($watches);
+
+	    foreach ($this->table as $row) {
+		    $fullname = $row['name'];
+
+		    foreach ($watches as $watch) {
+		    	if ($fullname == $watch['full_name']) {
+				break 2;
+			}
+		    }
+
+		    throw new Exception("Error!" . $this->username . " is not watching"  . $fullname);
+
+	   } 
+    }
+
+    /**
+     * @Then I delete all of my watches
+     */
+    public function iDeleteAllOfMyWatches()
+    {
+
+	     foreach($this->table as $row) {
+	            $this->response = $this->client->delete('/repos/' . $row['name']);
+                    $this->iExpectAResponseCode(204);
+	    }
+    }
+    
 }

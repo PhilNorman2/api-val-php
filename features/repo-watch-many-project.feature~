@@ -8,5 +8,5 @@ Feature: There are a number of repostitories we want to watch
 		| laravel	| framework	|
 		When I watch each repository
 		Then My watch list will include those respositories
-		And I delete all of my watches
+#		And I delete all of my watches
 

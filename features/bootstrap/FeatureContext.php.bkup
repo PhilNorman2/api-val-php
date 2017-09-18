@@ -232,16 +232,4 @@ class FeatureContext implements Context
 	   } 
     }
 
-    /**
-     * @Then I delete all of my watches
-     */
-    public function iDeleteAllOfMyWatches()
-    {
-
-	     foreach($this->table as $row) {
-	            $this->response = $this->client->delete('/repos/' . $row['name'] . '/subscription');
-                    $this->iExpectAResponseCode(204);
-	    }
-    }
-    
 }
