@@ -158,6 +158,7 @@ class FeatureContext implements Context
   {
       $this->response = $this->client->get('/repos/' . $this->username . '/' . $arg1 . '/subscription');
       $this->iExpectAResponseCode(200);
+     var_dump($this->response); 
 
   }
 

@@ -239,7 +239,7 @@ class FeatureContext implements Context
     {
 
 	     foreach($this->table as $row) {
-	            $this->response = $this->client->delete('/repos/' . $row['name']);
+	            $this->response = $this->client->delete('/repos/' . $row['name'] . '/subscription');
                     $this->iExpectAResponseCode(204);
 	    }
     }
