@@ -33,7 +33,7 @@ class FeatureContext implements Context
 	    $this->username = null;
 	    $this->password = null;
 	    $this->username = 'PhilNorman2';
-	    $this->password = 'Allie100';
+	    $this->password = '';
 	    echo("\nusername and password" . $this->username . " " . $this->password);
     }
   /**
