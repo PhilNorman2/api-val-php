@@ -4,4 +4,4 @@ default:
             context:
               - FeatureContext:
                   github_username: PhilNorman2 
-                  github_password: Allie100
+                  github_password: 
